@@ -252,17 +252,17 @@ export default function ScrappedProfilePage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             
                             {/* FIX: Safely check for genderSplit before using it */}
-                            {audienceDemographics.genderSplit?.length > 0 && (
-                                <DemographicsChart title="Gender Split" data={audienceDemographics.genderSplit} />
+                            {audienceDemographics.genderSplit?.length != 0 && (
+                                <DemographicsChart title="Gender Split" data={audienceDemographics.genderSplit?? []} />
                             )}
                             
                             {/* FIX: Safely check for ageGroups before using it */}
-                            {audienceDemographics.ageGroups?.length > 0 && (
-                                <DemographicsChart title="Age Groups" data={audienceDemographics.ageGroups} />
+                            {audienceDemographics.ageGroups?.length != 0 && (
+                                <DemographicsChart title="Age Groups" data={audienceDemographics.ageGroups ?? []} />
                             )}
                             
                             {/* FIX: Safely check for topGeographies before using it */}
-                            {audienceDemographics.topGeographies?.length > 0 && (
+                            {audienceDemographics.topGeographies?.length != 0 && (
                                 <div className="bg-card p-6 rounded-lg shadow-md border border-border transition-all hover:shadow-lg">
                                     <h3 className="font-semibold text-lg mb-4 text-card-foreground">Top Geographies</h3>
                                     <ul className="space-y-3">
