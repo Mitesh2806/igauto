@@ -13,7 +13,7 @@ job.start();
 const app = express();
 connectDB();
 const PORT = 3000;
-const allowedOrigins = "*";
+const allowedOrigins = ["http://localhost:5173", "https://igauto-fe.vercel.app/"];
 const corsOptions : cors.CorsOptions = {
     origin: allowedOrigins
 }

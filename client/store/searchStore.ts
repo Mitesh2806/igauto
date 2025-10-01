@@ -42,7 +42,7 @@ export const useSearchStore = create<SearchStore>((set) => ({
 
     try {
       // Note the URL now includes the username parameter
-      const response = await fetch(`http://localhost:3000/api/scrape/profile/${username}`, {
+      const response = await fetch(`https://igauto.onrender.com/api/scrape/profile/${username}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
