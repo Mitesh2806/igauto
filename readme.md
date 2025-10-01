@@ -2,7 +2,7 @@
 
 This full-stack application provides a comprehensive, data-rich dashboard for any public Instagram influencer. It scrapes real-time data by leveraging Instagram's internal JSON API, enriches it with multi-modal AI analysis via the Google Gemini API, and presents the insights in a clean, modern, and responsive user interface.
 
-![Demo Video](https://www.canva.com/design/DAG0iwd_G5M/SW3mHecGoX2Xw290lTN8Kg/watch?utm_content=DAG0iwd_G5M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdd7613eecb)
+![Demo Video](./igauto-demo-beta.mp4)
 
 ---
 
