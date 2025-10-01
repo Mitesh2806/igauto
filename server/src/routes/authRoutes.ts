@@ -26,10 +26,6 @@ router.post("/register", async(req, res) => {
       return res.status(400).json({message: "Email already exists"});
     }
     
-    const existingInstahandle = await User.findOne({instaHandle});
-    if(existingInstahandle) {
-      return res.status(400).json({message: "Insta User already exists"});
-    }
     
     
  
