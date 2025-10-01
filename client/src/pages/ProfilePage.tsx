@@ -8,7 +8,7 @@ import {
 
 // --- HELPER COMPONENTS & FUNCTIONS ---
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://igauto.onrender.com';
 
 const getProxiedImageUrl = (imageUrl: string) => {
     if (!imageUrl) return '';
