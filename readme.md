@@ -2,8 +2,9 @@
 
 This full-stack application provides a comprehensive, data-rich dashboard for any public Instagram influencer. It scrapes real-time data by leveraging Instagram's internal JSON API, enriches it with multi-modal AI analysis via the Google Gemini API, and presents the insights in a clean, modern, and responsive user interface.
 
-![Demo Video](./thumbnail.png)[https://drive.google.com/file/d/18nY7iL3dvyso6H8vuh76a6ABcW8leR7d/view?usp=drive_link]
+![Output_of_profile](./thumbnail.png)
 
+[**Demo Video**](https://drive.google.com/drive/folders/1yZWPFLbig8taRdXZhSFBruDkbG6OgexP?usp=sharing)
 ---
 
 ## Features
