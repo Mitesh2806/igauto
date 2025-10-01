@@ -17,8 +17,7 @@ const getProxiedImageUrl = (imageUrl: string) => {
 
 // A versatile card for displaying key statistics
 const StatCard = ({ label, value, icon }: { label: string; value: number | string; icon?: string }) => (
-    // Applied theme classes: bg-card, border-border, text-primary, text-muted-foreground
-    <div className="bg-card p-6 rounded-lg shadow-md text-center border border-border">
+    <div className="bg-card p-6 rounded-lg shadow-md text-center border border-border transition-all hover:shadow-lg hover:scale-105">
         {icon && <div className="text-3xl mb-2">{icon}</div>}
         <p className="text-2xl font-bold text-primary">{String(value)}</p>
         <p className="text-sm text-muted-foreground mt-1">{label}</p>
@@ -27,9 +26,8 @@ const StatCard = ({ label, value, icon }: { label: string; value: number | strin
 
 // A card for displaying recent posts/reels with AI tags
 const PostCard = ({ post }: { post: any }) => (
-    // Applied theme classes: bg-muted
-    <div className="bg-card rounded-lg shadow-md border border-border overflow-hidden"> {/* Changed bg-muted to bg-card for better theme consistency */}
-        <div className="relative group aspect-square">
+    <div className="bg-card rounded-lg shadow-md border border-border overflow-hidden transition-all hover:shadow-xl hover:scale-[1.02]">
+        <div className="relative group aspect-square overflow-hidden">
             <img
                 src={getProxiedImageUrl(post.imageUrl)}
                 alt={post.caption ? post.caption.substring(0, 50) : 'Instagram Post'}
@@ -40,7 +38,7 @@ const PostCard = ({ post }: { post: any }) => (
                 }}
             />
             {/* Overlay for likes/comments on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div>
                     <div className="flex text-white text-xs gap-4 font-medium">
                         <span>❤️ {post.likes.toLocaleString()}</span>
@@ -54,19 +52,18 @@ const PostCard = ({ post }: { post: any }) => (
         {/* Caption and Tags Section (visible always, below the image) */}
         <div className="p-3">
             {post.aiAnalysis?.tags && post.aiAnalysis.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3"> {/* Added mb-3 for space */}
+                <div className="flex flex-wrap gap-2 mb-3">
                     {post.aiAnalysis.tags.map((tag: string) => (
-                        <span key={tag} className="text-xs font-medium bg-secondary text-secondary-foreground rounded-full px-3 py-1">
+                        <span key={tag} className="text-xs font-medium bg-secondary text-secondary-foreground rounded-full px-3 py-1 transition-all hover:scale-110">
                             {tag}
                         </span>
                     ))}
                 </div>
             )}
-            {/* You can choose to display the caption here or keep it hidden if not needed */}
             {post.caption && (
                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{post.caption}</p>
             )}
-            <div className="flex text-sm text-muted-foreground gap-4 font-medium mt-auto"> {/* Aligned to bottom if space is available */}
+            <div className="flex text-sm text-muted-foreground gap-4 font-medium mt-auto">
                 <span>❤️ {post.likes.toLocaleString()}</span>
                 <span>💬 {post.comments.toLocaleString()}</span>
                 {post.views != null && <span>▶️ {post.views.toLocaleString()}</span>}
@@ -79,8 +76,7 @@ const PostCard = ({ post }: { post: any }) => (
 // Component for Demographics Pie Chart
 const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
 const DemographicsChart = ({ title, data }: { title: string, data: { name: string, value: number }[] }) => (
-    // Applied theme classes: bg-card, border-border, text-card-foreground
-    <div className="bg-card p-6 rounded-lg shadow-md border border-border h-80 flex flex-col">
+    <div className="bg-card p-6 rounded-lg shadow-md border border-border h-80 flex flex-col transition-all hover:shadow-lg">
         <h3 className="font-semibold text-lg mb-4 text-card-foreground">{title}</h3>
         <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -109,24 +105,49 @@ function ProfilePage() {
     }, [fetchProfileData, scrapedData]);
 
     const renderContent = () => {
-        if (isLoading) return <div className="text-center p-10 text-muted-foreground">Loading profile data...</div>;
-        if (error) return <div className="text-center p-10 text-destructive">{`Error: ${error}`}</div>;
+        if (isLoading) {
+            return (
+                <div className="text-center p-10 text-muted-foreground">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+                    <p className="text-lg">Loading profile data...</p>
+                </div>
+            );
+        }
+        
+        if (error) {
+            return (
+                <div className="text-center p-10">
+                    <div className="bg-destructive/10 text-destructive rounded-lg p-6 inline-block">
+                        <span className="text-3xl mb-3 block">⚠️</span>
+                        <p className="font-semibold">{`Error: ${error}`}</p>
+                    </div>
+                </div>
+            );
+        }
+        
         if (!scrapedData?.profile) {
-            return <div className="text-center p-10 text-muted-foreground">No profile data found.</div>;
+            return (
+                <div className="text-center p-10">
+                    <div className="bg-muted rounded-lg p-8 inline-block">
+                        <span className="text-4xl mb-3 block">📭</span>
+                        <p className="text-muted-foreground">No profile data found.</p>
+                    </div>
+                </div>
+            );
         }
 
         const { profile, analytics } = scrapedData;
         const { stats } = analytics || {};
-        const { audienceDemographics, recentPosts } = profile; // Destructure recentPosts
+        const { audienceDemographics, recentPosts } = profile;
 
         return (
             <div className="max-w-7xl mx-auto space-y-8">
                 {/* Profile Header */}
-                <div className="flex flex-col sm:flex-row items-center gap-6 bg-card p-6 rounded-lg shadow-md border border-border">
+                <div className="flex flex-col sm:flex-row items-center gap-6 bg-card p-6 rounded-lg shadow-md border border-border transition-all hover:shadow-lg">
                     <img
                         src={getProxiedImageUrl(profile.profilePictureUrl)}
                         alt={profile.username}
-                        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-primary object-cover"
+                        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-primary object-cover transition-transform hover:scale-110"
                     />
                     <div>
                         <h1 className="text-2xl sm:text-3xl font-bold text-card-foreground text-center sm:text-left">@{profile.username}</h1>
@@ -162,11 +183,11 @@ function ProfilePage() {
                             {audienceDemographics.genderSplit?.length > 0 && <DemographicsChart title="Gender Split" data={audienceDemographics.genderSplit} />}
                             {audienceDemographics.ageGroups?.length > 0 && <DemographicsChart title="Age Groups" data={audienceDemographics.ageGroups} />}
                             {audienceDemographics.topGeographies?.length > 0 && (
-                                <div className="bg-card p-6 rounded-lg shadow-md border border-border">
+                                <div className="bg-card p-6 rounded-lg shadow-md border border-border transition-all hover:shadow-lg">
                                     <h3 className="font-semibold text-lg mb-4 text-card-foreground">Top Geographies</h3>
                                     <ul className="space-y-3">
                                         {audienceDemographics.topGeographies.map(geo => (
-                                            <li key={geo.name} className="flex justify-between items-center text-muted-foreground">
+                                            <li key={geo.name} className="flex justify-between items-center text-muted-foreground transition-all hover:text-primary">
                                                 <span>{geo.name}</span>
                                                 <span className="font-bold text-primary">{geo.value}%</span>
                                             </li>
@@ -181,7 +202,7 @@ function ProfilePage() {
                 {/* Recent Posts Grid */}
                 {recentPosts && recentPosts.length > 0 && (
                     <div>
-                        <h2 className="text-2xl font-bold mb-4 text-foreground">Recent Posts</h2>
+                        <h2 className="text-2xl font-bold mb-4 text-foreground">📸 Recent Posts</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {recentPosts.map((post: any, index: number) => (
                                 <PostCard key={post.id || index} post={post} />
