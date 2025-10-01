@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchStore } from '../../store/searchStore';
 import Layout from '../../components/ProfileLayout'; // Assuming your layout component is here
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, 
-  Tooltip, Legend, ResponsiveContainer, BarChart, Bar 
-} from 'recharts';
+
 
 // --- HELPER COMPONENTS (Scoped to this file) ---
 
@@ -23,27 +20,6 @@ const StatCard = ({ label, value, icon }: { label: string; value: number | strin
   </div>
 );
 
-const PostCard = ({ post }: { post: any }) => (
-  <div className="relative group overflow-hidden rounded-lg shadow-md bg-gray-100 dark:bg-gray-700 aspect-square">
-    <img 
-      src={getProxiedImageUrl(post.imageUrl)} 
-      alt={post.caption ? post.caption.substring(0, 50) : 'Instagram Post'} 
-      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-      loading="lazy"
-      onError={(e) => {
-        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="14" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
-      }}
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-      <p className="text-white text-sm line-clamp-2 mb-2">{post.caption || 'No caption'}</p>
-      <div className="flex text-white text-xs gap-4 font-medium">
-        <span>❤️ {post.likes.toLocaleString()}</span>
-        <span>💬 {post.comments.toLocaleString()}</span>
-        {post.views != null && <span>▶️ {post.views.toLocaleString()}</span>}
-      </div>
-    </div>
-  </div>
-);
 
 // --- MAIN SEARCH PAGE COMPONENT ---
 
@@ -71,7 +47,7 @@ export default function ScrappedProfilePage() {
     if (!searchedData) return <div className="text-center p-10 text-gray-500">Search for a profile to see the results.</div>;
   
     const { profile, analytics } = searchedData;
-    const { stats, growthData, postPerformance } = analytics || {};
+    const { stats } = analytics || {};
 
     return (
       <div className="mt-8 space-y-8">

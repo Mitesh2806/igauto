@@ -3,7 +3,7 @@ import { useScrapeStore } from '../../store/scrapeStore';
 import Layout from '../../components/ProfileLayout';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell
+  Legend, ResponsiveContainer,  PieChart, Pie, Cell
 } from 'recharts';
 
 // --- HELPER COMPONENTS & FUNCTIONS ---
@@ -64,7 +64,7 @@ const DemographicsChart = ({ title, data }: { title: string, data: { name: strin
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
-          {data.map((entry, index) => (
+          {data.map((_, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
@@ -96,7 +96,7 @@ function ProfilePage() {
     }
 
     const { profile, analytics } = scrapedData;
-    const { stats, growthData, postPerformance } = analytics || {};
+    const { stats, growthData } = analytics || {};
     const { audienceDemographics, recentPosts, recentReels } = profile;
 
     return (
