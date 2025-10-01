@@ -29,6 +29,7 @@ interface Post {
     caption: string;
     likes: number;
     comments: number;
+
     views?: number;
     aiAnalysis?: {
         tags: string[];
@@ -78,7 +79,7 @@ const StatCard = ({ label, value, icon }: { label: string; value: number | strin
     </div>
 );
 
-const PostCard = ({ post }: { post: Post }) => ( // Changed 'any' to 'Post' type
+const PostCard = ({ post }: { post: Post }) => (
     <div className="bg-card rounded-lg shadow-md border border-border overflow-hidden transition-all hover:shadow-xl hover:scale-[1.02]">
         <div className="relative group aspect-square overflow-hidden">
             <img
@@ -150,7 +151,6 @@ const DemographicsChart = ({ title, data }: { title: string; data: { name: strin
 
 export default function ScrappedProfilePage() {
     const [username, setUsername] = useState('');
-    // Assuming your store returns 'searchedData' with the type 'SearchedData | null'
     const { searchProfile, searchedData, isLoading, error, clearSearch } = useSearchStore() as {
         searchProfile: (username: string) => void;
         searchedData: SearchedData | null;
@@ -205,7 +205,6 @@ export default function ScrappedProfilePage() {
         }
 
         const { profile, analytics } = searchedData;
-        // The 'as any' casts are no longer needed due to the new types
         const { audienceDemographics, recentPosts } = profile;
         const stats = analytics?.stats;
 
@@ -251,21 +250,25 @@ export default function ScrappedProfilePage() {
                     <div>
                         <h2 className="text-2xl font-bold mb-4 text-foreground">🤖 AI Audience Demographics</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          //@ts-ignore
+                            
+                            {/* FIX: Safely check for genderSplit before using it */}
                             {audienceDemographics.genderSplit?.length > 0 && (
                                 <DemographicsChart title="Gender Split" data={audienceDemographics.genderSplit} />
                             )}
-                            //@ts-ignore
+                            
+                            {/* FIX: Safely check for ageGroups before using it */}
                             {audienceDemographics.ageGroups?.length > 0 && (
                                 <DemographicsChart title="Age Groups" data={audienceDemographics.ageGroups} />
                             )}
-                            //@ts-ignore
+                            
+                            {/* FIX: Safely check for topGeographies before using it */}
                             {audienceDemographics.topGeographies?.length > 0 && (
                                 <div className="bg-card p-6 rounded-lg shadow-md border border-border transition-all hover:shadow-lg">
                                     <h3 className="font-semibold text-lg mb-4 text-card-foreground">Top Geographies</h3>
                                     <ul className="space-y-3">
-                                     //@ts-ignore
-                                        {audienceDemographics.topGeographies.map((geo: Geography) => (
+                                        
+                                        {/* FIX: Safely call .map() on topGeographies */}
+                                        {audienceDemographics.topGeographies?.map((geo: Geography) => (
                                             <li key={geo.name} className="flex justify-between items-center text-muted-foreground transition-all hover:text-primary">
                                                 <span>{geo.name}</span>
                                                 <span className="font-bold text-primary">{geo.value}%</span>
