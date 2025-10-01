@@ -26,36 +26,6 @@ const StatCard = ({ label, value, icon }: { label: string; value: number | strin
 );
 
 // A card for displaying recent posts/reels with AI tags
-const PostCard = ({ post }: { post: any }) => (
-  // Applied theme classes: bg-muted
-  <div className="relative group overflow-hidden rounded-lg shadow-md bg-muted aspect-square">
-    <img
-      src={getProxiedImageUrl(post.imageUrl)}
-      alt={post.caption ? post.caption.substring(0, 50) : 'Instagram Post'}
-      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-      loading="lazy"
-      onError={(e) => {
-        e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="14" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
-      }}
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-between p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-      {post.aiAnalysis?.tags && (
-        <div className="flex flex-wrap gap-1">
-          {post.aiAnalysis.tags.map((tag: string) => (
-            <span key={tag} className="text-xs bg-white/20 text-white backdrop-blur-sm rounded-full px-2 py-0.5">{tag}</span>
-          ))}
-        </div>
-      )}
-      <div>
-        <div className="flex text-white text-xs gap-4 font-medium">
-          <span>❤️ {post.likes.toLocaleString()}</span>
-          <span>💬 {post.comments.toLocaleString()}</span>
-          {post.views != null && <span>▶️ {post.views.toLocaleString()}</span>}
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 // Component for Demographics Pie Chart
 const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
