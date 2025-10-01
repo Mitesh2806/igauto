@@ -53,7 +53,7 @@ export const useScrapeStore = create<ScrapeStore>((set) => ({
     }
 
     try {
-      const response = await fetch("http://https://igauto.onrender.com/api/scrape/profile", {
+      const response = await fetch("https://igauto.onrender.com/api/scrape/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
