@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore"; // Adjust the path if needed
-
 import ProfilePage from './pages/ProfilePage';
 import AuthPage from './pages/AuthPage';
 import LandingPage from './pages/LandingPage';
