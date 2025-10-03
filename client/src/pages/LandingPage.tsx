@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Instagram, TrendingUp, Users, BarChart3, Sparkles, ArrowRight, Check } from 'lucide-react';
 
+// Mock Link component - replace with actual react-router-dom Link in your app
+const Link = ({ to, children, className }: { to: string; children: React.ReactNode; className?: string }) => (
+  <a href={to} className={className} onClick={(e) => { e.preventDefault(); window.location.href = to; }}>
+    {children}
+  </a>
+);
+
 function LandingPage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -68,12 +75,12 @@ function LandingPage() {
           </div>
           <span className="text-xl font-bold">InstaAnalytics</span>
         </div>
-        <a
-          href="/auth"
+        <Link
+          to="/auth"
           className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-lg font-medium transition-all backdrop-blur-sm border border-white/10"
         >
           Sign In
-        </a>
+        </Link>
       </nav>
 
       {/* Hero Section */}
@@ -102,13 +109,13 @@ function LandingPage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <a
-              href="/auth"
+            <Link
+              to="/auth"
               className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-semibold transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2"
             >
               Get Started Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             <button className="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition-all backdrop-blur-sm border border-white/10">
               Watch Demo
             </button>
@@ -197,13 +204,13 @@ function LandingPage() {
           <p className="text-zinc-400 text-lg mb-8">
             Join thousands of creators and brands using InstaAnalytics
           </p>
-          <a
-            href="/auth"
+          <Link
+            to="/auth"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-semibold transition-all shadow-lg shadow-blue-600/25"
           >
             Start Your Free Trial
             <ArrowRight className="w-5 h-5" />
-          </a>
+          </Link>
         </div>
       </div>
 
