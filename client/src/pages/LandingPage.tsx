@@ -12,7 +12,7 @@ function LandingPage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleMouseMove = (e: any) => {
+    const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
@@ -76,7 +76,7 @@ function LandingPage() {
           <span className="text-xl font-bold">InstaAnalytics</span>
         </div>
         <Link
-          to="https://igauto.onrender.com/auth"
+          to="/auth"
           className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-lg font-medium transition-all backdrop-blur-sm border border-white/10"
         >
           Sign In
@@ -109,13 +109,13 @@ function LandingPage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <a
-              href="https://igauto.onrender.com/auth"
+            <Link
+              to="/auth"
               className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-semibold transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2"
             >
               Get Started Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             <button className="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-xl font-semibold transition-all backdrop-blur-sm border border-white/10">
               Watch Demo
             </button>
