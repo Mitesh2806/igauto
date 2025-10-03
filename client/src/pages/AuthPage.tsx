@@ -38,7 +38,7 @@ function AuthPage() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Instagram Handle"
+            placeholder="try:karanaujla"
             value={instaHandle}
             onChange={(e) => setInstaHandle(e.target.value)}
             className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -54,7 +54,7 @@ function AuthPage() {
           )}
           <input
             type="password"
-            placeholder="Password"
+            placeholder="try:1234567"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

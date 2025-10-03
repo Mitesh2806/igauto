@@ -1,4 +1,4 @@
-// src/lib/scraper-gq.ts
+
 import fs from 'fs';
 import path from 'path';
 
@@ -122,7 +122,7 @@ export const scrapeInstagramProfile = async (
 
     feedJson.items.forEach((item: any) => {
       // Stop if we already have 10 posts
-      if (allPosts.length >= 10) {
+      if (allPosts.length >= 5) {
         return;
       }
       
