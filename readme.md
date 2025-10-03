@@ -4,7 +4,7 @@ This full-stack application provides a comprehensive, data-rich dashboard for an
 
 ![Output_of_profile](./thumbnail.png)
 
-[**Demo Video**](https://drive.google.com/drive/folders/1yZWPFLbig8taRdXZhSFBruDkbG6OgexP?usp=sharing)
+[**Demo Video**](https://drive.google.com/file/d/1ejyP91wFeWpWMM8_oiMLj8fJJG_FDpxx/view?usp=drive_link)
 ---
 
 ## Features
