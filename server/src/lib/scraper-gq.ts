@@ -7,9 +7,6 @@ dotenv.config();
 
 // --- Existing Type Definitions ---
 
-// Add this to your existing src/lib/scraper-gq.ts file
-
-// You can define a more specific type for the final output
 export interface ScrapedProfileData {
   username: string;
   fullName: string;
@@ -29,8 +26,9 @@ interface FormattedPost {
   contentType: string;
   caption: string;
   postUrl: string;
-  views?: number; // Optional for reels
+  views?: number;
 }
+
 interface Cookie {
   name: string;
   value: string;
@@ -45,21 +43,12 @@ if (!_userAgent || !_xIgAppId) {
   throw new Error("Server is missing required scraper environment variables.");
 }
 
-/**
- * Scrapes an Instagram profile using the mobile API endpoints.
- * It first fetches profile info to get the user ID, then fetches the user's feed
- * to retrieve the most recent posts and reels, separating them.
- * This function mirrors the logic of your initial JavaScript example.
- *
- * @param username The Instagram username to scrape.
- * @returns The scraped profile data or null if an error occurs.
- */
 export const scrapeInstagramProfile = async (
   username: string
 ): Promise<ScrapedProfileData | null> => {
   console.log(`[API Scraper]: Starting scrape for profile: ${username}`);
   try {
-    // --- 1. Authentication & Header Setup --- (This part remains the same)
+    // --- 1. Authentication & Header Setup ---
     console.log('[API Scraper]: Loading session cookies for authentication...');
     const cookiesPath = path.join(process.cwd(), 'cookies.json');
     const cookiesString = fs.readFileSync(cookiesPath, 'utf-8');
@@ -91,7 +80,7 @@ export const scrapeInstagramProfile = async (
       "X-Requested-With": "XMLHttpRequest"
     };
 
-    // --- 2. Fetch Basic Profile Info --- (This part remains the same)
+    // --- 2. Fetch Basic Profile Info ---
     console.log(`[API Scraper]: Fetching profile info for ${username}...`);
     const profileUrl = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${username}`;
     const profileResponse = await fetch(profileUrl, { headers });
@@ -117,7 +106,7 @@ export const scrapeInstagramProfile = async (
       profilePictureUrl: userData.profile_pic_url_hd,
     };
 
-    // --- 3. Fetch User Feed --- (This part remains the same)
+    // --- 3. Fetch User Feed ---
     console.log(`[API Scraper]: Fetching posts for user ID ${userId}...`);
     const feedUrl = `https://www.instagram.com/api/v1/feed/user/${userId}/`;
     const feedResponse = await fetch(feedUrl, { headers });
@@ -128,59 +117,59 @@ export const scrapeInstagramProfile = async (
     }
     const feedJson = await feedResponse.json();
 
-    const recentPosts: FormattedPost[] = [];
-    const recentReels: FormattedPost[] = [];
+    // --- 4. Process Feed Items ---
+    const allPosts: FormattedPost[] = [];
 
-    // --- 4. Process Feed Items --- (This part is updated)
     feedJson.items.forEach((item: any) => {
-      if (recentPosts.length >= 10 && recentReels.length >= 5) {
+      // Stop if we already have 10 posts
+      if (allPosts.length >= 10) {
         return;
       }
       
-      const imageUrl = item.image_versions2?.candidates[0]?.url || item.carousel_media?.[0]?.image_versions2?.candidates[0]?.url;
+      const imageUrl = item.image_versions2?.candidates[0]?.url || 
+                       item.carousel_media?.[0]?.image_versions2?.candidates[0]?.url;
 
-      // ==========================================================
-      // NEW: Logic to determine the content type
-      // ==========================================================
+      // Determine the content type
       let contentType: string;
       if (item.product_type === 'clips') {
-          contentType = 'Reel';
+        contentType = 'Reel';
       } else if (item.media_type === 1) {
-          contentType = 'Image';
+        contentType = 'Image';
       } else if (item.media_type === 8) {
-          contentType = 'Carousel';
+        contentType = 'Carousel';
       } else if (item.media_type === 2) {
-          contentType = 'Video';
+        contentType = 'Video';
       } else {
-          contentType = 'Unknown';
+        contentType = 'Unknown';
       }
-      // ==========================================================
 
       const postData: FormattedPost = {
         id: item.id,
         imageUrl: imageUrl,
-        contentType: contentType, // <-- ADDED: Assign the determined type
+        contentType: contentType,
         likes: item.like_count || 0,
         comments: item.comment_count || 0,
         caption: item.caption?.text || "",
         postUrl: `https://www.instagram.com/p/${item.code}/`
       };
 
-      if (contentType === 'Reel') { // Check against the new variable
-        if (recentReels.length < 5) {
-          postData.views = item.play_count || 0;
-          recentReels.push(postData);
-        }
-      } else {
-        if (recentPosts.length < 10) {
-          recentPosts.push(postData);
-        }
+      // Add views for reels and videos
+      if (contentType === 'Reel' || contentType === 'Video') {
+        postData.views = item.play_count || 0;
       }
+
+      allPosts.push(postData);
     });
 
-    const finalData: ScrapedProfileData = { ...basicInfo, recentPosts, recentReels };
+    // Separate into recentPosts and recentReels
+    const recentPosts = allPosts;
+    const recentReels = allPosts.filter(post => post.contentType === 'Reel');
 
-    // --- 5. Save Output --- (This part remains the same)
+    const finalData: ScrapedProfileData = { 
+      ...basicInfo, 
+      recentPosts,
+      recentReels
+    };
 
     return finalData;
 
